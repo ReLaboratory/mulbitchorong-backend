@@ -9,7 +9,7 @@
     - request header: X
     - params: X
     - request body:
-      - id(String): 아이디 값인 이메일
+      - uid(String): 아이디 값인 이메일
       - pw(String): 사용자 비밀번호
     - response header: X
     - response body:
@@ -19,7 +19,7 @@
     - params: X
     - request body:
       - uname(String): 사용자 이름
-      - id(String): 아이디 값인 이메일
+      - uid(String): 아이디 값인 이메일
       - pw(String): 사용자 비밀번호
     - response header: X
     - response body:
