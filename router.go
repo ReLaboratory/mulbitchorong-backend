@@ -56,7 +56,39 @@ func Signup(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 }
 
 // Login 함수는 로그인 기능을 수행하는 핸들러입니다.
-func Login(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {}
+func Login(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	ures := new(UserRes)
+	uLogin := new(UserLogin)
+	errs := binding.Bind(req, uLogin)
+	if errs != nil {
+		fmt.Println(errs)
+	}
+
+	session := mongoSession.Copy()
+	defer session.Close()
+
+	c := session.DB("test").C("users")
+
+	u := new(User)
+	err := c.Find(bson.M{"uid": uLogin.ID}).One(&u)
+	if err != nil {
+		hashedPw, _ := bcrypt.GenerateFromPassword([]byte(uLogin.Pw), bcrypt.DefaultCost)
+		if u.UID == uLogin.ID {
+			if u.Pw == string(hashedPw[:]) {
+				ures.Name = u.Name
+				ures.IsSuccess = true
+			} else {
+				ures.Name = ""
+				ures.IsSuccess = false
+			}
+		} else {
+			ures.Name = ""
+			ures.IsSuccess = false
+		}
+	}
+
+	renderer.JSON(w, http.StatusOK, ures)
+}
 
 // GetUserName 함수는 유저의 ID값에 맞는 데이터를 조회하여 해당하는 유저의 이름을 응답하는 핸들러입니다.
 func GetUserName(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {

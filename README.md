@@ -6,7 +6,7 @@
 => 직렬화 포맷은 JSON입니다.
 
 - Account API
-  - `POST api/account/login` : 로그인 정보를 받으면 로그인 성공 여부를 응답합니다.
+  - `POST api/account/login` : 로그인 정보를 받으면 사용자이름과 로그인 성공 여부를 응답합니다.
     - request header: X
     - params: X
     - request body:
@@ -14,7 +14,8 @@
       - pw(String): 사용자 비밀번호
     - response header: X
     - response body:
-      - isAuth(Boolean): 로그인 성공 여부
+      - isSuccess(Boolean): 로그인 성공 여부
+      - uname(String): 사용자 이름
   - `POST api/account/signup`: 회원정보를 받으면 사용자이름과 성공 여부를 응답합니다.
     - request header: X
     - params: X
