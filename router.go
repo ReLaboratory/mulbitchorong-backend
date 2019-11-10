@@ -30,7 +30,15 @@ func Signup(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	renderer.JSON(w, http.StatusCreated, u)
+	ures := new(UserRes)
+	ures.Name = u.Name
+	if ures.Name != "" {
+		ures.IsSuccess = true
+	} else {
+		ures.IsSuccess = false
+	}
+
+	renderer.JSON(w, http.StatusCreated, ures)
 }
 
 // Login 함수는 로그인 기능을 수행하는 핸들러입니다.

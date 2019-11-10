@@ -3,6 +3,7 @@
 안드로이드 앱 물빛초롱의 서버단 Repository입니다.
 
 ## API
+=> 직렬화 포맷은 JSON입니다.
 
 - Account API
   - `POST api/account/login` : 로그인 정보를 받으면 로그인 성공 여부를 응답합니다.
