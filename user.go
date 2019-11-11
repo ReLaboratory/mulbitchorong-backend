@@ -7,7 +7,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-// User 구조체는 사용자 정보를 저장합니다.
+// User 구조체는 유저 정보를 저장합니다.
 type User struct {
 	ID   bson.ObjectId `bson:"_id" json:"id"`
 	UID  string        `bson:"uid" json:"uid"`
@@ -25,6 +25,11 @@ type UserRes struct {
 type UserLogin struct {
 	ID string `json:"uid"`
 	Pw string `json:"pw"`
+}
+
+// UserName 구조체는 유저의 이름을 담고 있습니다.
+type UserName struct {
+	Name string `json:"uname"`
 }
 
 // FieldMap 메서드는 UserLogin 타입을 binding.FieldMapper 인터페이스이도록 하기 위해 만든 메서드입니다.
