@@ -55,6 +55,15 @@ func Signup(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	renderer.JSON(w, statusCode, ures)
 }
 
+// ComparePw 함수는 해쉬화된 Pw와 평문 Pw를 비교하는 함수입니다.
+func ComparePw(hash, pw string) (bool, error) {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pw))
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
 // Login 함수는 로그인 기능을 수행하는 핸들러입니다.
 func Login(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	ures := new(UserRes)
@@ -72,9 +81,12 @@ func Login(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	u := new(User)
 	err := c.Find(bson.M{"uid": uLogin.ID}).One(&u)
 	if err != nil {
-		hashedPw, _ := bcrypt.GenerateFromPassword([]byte(uLogin.Pw), bcrypt.DefaultCost)
+		ures.Name = ""
+		ures.IsSuccess = false
+	} else {
 		if u.UID == uLogin.ID {
-			if u.Pw == string(hashedPw[:]) {
+			pwOK, _ := ComparePw(u.Pw, uLogin.Pw)
+			if pwOK {
 				ures.Name = u.Name
 				ures.IsSuccess = true
 			} else {
