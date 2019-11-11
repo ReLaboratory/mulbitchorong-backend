@@ -48,7 +48,7 @@ func Signup(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 		ures.Name = ""
 	}
 
-	if ures.IsSuccess {
+	if !ures.IsSuccess {
 		statusCode = http.StatusOK
 	}
 
