@@ -31,6 +31,7 @@ func New() (*Server, error) {
 	sv.router.POST("/api/account/profile", handle.RegisterProfile)
 	sv.router.POST("/api/img/upload", handle.Upload)
 
+	sv.neg.UseHandler(sv.router)
 	return sv, nil
 }
 
