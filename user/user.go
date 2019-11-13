@@ -48,3 +48,27 @@ func (u *User) FieldMap(req *http.Request) binding.FieldMap {
 		&u.Name: "uname",
 	}
 }
+
+// New 함수는 새로운 User 구조체를 생성합니다.
+func New() *User {
+	u := new(User)
+	return u
+}
+
+// NewRes 함수는 새로운 Res 구조체를 생성합니다.
+func NewRes() *Res {
+	ures := new(Res)
+	return ures
+}
+
+// NewLogin 함수는 새로운 User 구조체를 생성합니다.
+func NewLogin() *Login {
+	u := new(Login)
+	return u
+}
+
+// NewName 함수는 새로운 Name 구조체를 생성합니다.
+func NewName() *Name {
+	u := new(Name)
+	return u
+}

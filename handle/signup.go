@@ -2,6 +2,7 @@ package handle
 
 import (
 	"fmt"
+	"mulbitchorong-backend/user"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -14,22 +15,22 @@ import (
 func Signup(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	statusCode := http.StatusCreated
 
-	u := new(User)
+	u := user.New()
 	errs := binding.Bind(req, u)
 	if errs != nil {
 		fmt.Println(errs)
 	}
 	u.ID = bson.NewObjectId()
 
-	ures := new(UserRes)
+	ures := user.NewRes()
 	ures.Name = u.Name
 
-	session := mongoSession.Copy()
+	session := mongoDB.Session.Copy()
 	defer session.Close()
 
 	c := session.DB("test").C("users")
 
-	IDCheck := User{}
+	IDCheck := user.User{}
 	err := c.Find(bson.M{"uid": u.UID}).One(&IDCheck)
 	if err != nil {
 		ures.IsSuccess = true

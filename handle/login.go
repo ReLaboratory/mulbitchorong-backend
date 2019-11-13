@@ -2,6 +2,7 @@ package handle
 
 import (
 	"fmt"
+	"mulbitchorong-backend/user"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -21,19 +22,19 @@ func ComparePw(hash, pw string) (bool, error) {
 
 // Login 함수는 로그인 기능을 수행하는 핸들러입니다.
 func Login(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	ures := new(UserRes)
-	uLogin := new(UserLogin)
+	ures := user.NewRes()
+	uLogin := user.NewLogin()
 	errs := binding.Bind(req, uLogin)
 	if errs != nil {
 		fmt.Println(errs)
 	}
 
-	session := mongoSession.Copy()
+	session := mongoDB.Session.Copy()
 	defer session.Close()
 
 	c := session.DB("test").C("users")
 
-	u := new(User)
+	u := user.New()
 	err := c.Find(bson.M{"uid": uLogin.ID}).One(&u)
 	if err != nil {
 		ures.Name = ""
