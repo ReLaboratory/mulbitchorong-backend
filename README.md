@@ -67,4 +67,12 @@
     - request body: X
     - response header: X
     - response body:
-      - imgNames(String[]): 모든 이미지의 파일 이름
+      - imgName(String)을 담고 있는 배열: 모든 이미지의 파일 이름 
+      ```json
+      ex)
+      [
+        {
+            "imgName": "Hello1_2019-11-14-19:48:27.png"
+        }
+      ]
+      ```
