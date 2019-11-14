@@ -46,7 +46,7 @@
     - params: X
     - request body:
       - profile(File): 프로필 이미지 파일
-      - uname(String): 사용자 이름
+      - uid(String): 사용자 아이디
     - response header: X
     - response body:
       - isSuccess(Boolean): 프로필 등록 성공 여부
