@@ -16,7 +16,7 @@ import (
 // FileMeta 는 Upload할 파일의 메타정보를 담는 구조체입니다.
 type FileMeta struct {
 	Inode int
-	Uname string
+	UID   string
 }
 
 type res struct {
@@ -30,7 +30,7 @@ func Upload(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	req.ParseForm()
 	_, fh, err := req.FormFile("files")
 	iname := req.FormValue("imgName")
-	uname := req.FormValue("uname")
+	uid := req.FormValue("uid")
 
 	file, _ := fh.Open()
 	uFileName := string(iname + filepath.Ext(fh.Filename))
@@ -38,7 +38,7 @@ func Upload(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	if err != nil {
 		uploadRes.IsSuccess = false
 	}
-	gridFile.SetMeta(bson.M{"user": uname})
+	gridFile.SetMeta(bson.M{"user": uid})
 	gridFile.SetName(uFileName)
 
 	if err := writeToGridFile(file, gridFile); err != nil {

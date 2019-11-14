@@ -57,7 +57,7 @@
     - request body:
       - img(File): 이미지 파일
       - imgName(String): 이미지 이름
-      - uname(String): 업로드한 사용자의 이름
+      - uid(String): 업로드한 사용자의 아이디
     - response header: X
     - response body:
       - isSuccess(Boolean): 업로드 성공 여부
@@ -67,4 +67,4 @@
     - request body: X
     - response header: X
     - response body:
-      - imgnames(String[]): 모든 이미지의 파일 이름
+      - imgNames(String[]): 모든 이미지의 파일 이름
