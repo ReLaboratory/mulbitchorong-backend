@@ -35,7 +35,7 @@ func Upload(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	gridFile.SetMeta(bson.M{"uid": uid, "ext": fileExt})
 	gridFile.SetName(uFileName)
 
-	if err := writeToGridFile(file, gridFile); err != nil {
+	if err := WriteToGridFile(file, gridFile); err != nil {
 		uploadRes.IsSuccess = false
 	} else {
 		uploadRes.IsSuccess = true
@@ -43,7 +43,8 @@ func Upload(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	renderer.JSON(w, http.StatusCreated, uploadRes)
 }
 
-func writeToGridFile(file multipart.File, gridFile *mgo.GridFile) error {
+// WriteToGridFile 은 GridFile로 파일 쓰기를 수행합니다.
+func WriteToGridFile(file multipart.File, gridFile *mgo.GridFile) error {
 	reader := bufio.NewReader(file)
 	defer func() { file.Close() }()
 	// make a buffer to keep chunks that are read
