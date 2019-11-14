@@ -5,6 +5,7 @@ import "gopkg.in/mgo.v2"
 // MongoDB 구조체는 몽고DB에 대한 정보를 담는 구조체입니다.
 type MongoDB struct {
 	Session *mgo.Session
+	DB      *mgo.Database
 }
 
 // NewMongoDB 메서드는 MongoDB 객체와 MongoDB Session을 생성합니다.
@@ -15,6 +16,9 @@ func NewMongoDB(addr string) (*MongoDB, error) {
 		return nil, err
 	}
 
-	m := &MongoDB{Session: s}
+	m := &MongoDB{}
+	m.DB = new(mgo.Database)
+	m.DB.Session = s
+	m.Session = s
 	return m, nil
 }
