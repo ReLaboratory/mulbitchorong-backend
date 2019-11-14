@@ -61,4 +61,10 @@
     - response header: X
     - response body:
       - isSuccess(Boolean): 업로드 성공 여부
-  - 이미지 반환 방법 - 추가 예정
+  - `GET api/img/name`: 모든 이미지의 이름을 응답합니다.
+    - request header: X
+    - params: X
+    - request body: X
+    - response header: X
+    - response body:
+      - imgnames(String[]): 모든 이미지의 파일 이름
