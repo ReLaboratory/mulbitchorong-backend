@@ -56,7 +56,7 @@
     - request header: X
     - params: X
     - request body:
-      - img(File): 이미지 파일
+      - files(File): 이미지 파일
       - imgName(String): 이미지 이름
       - uid(String): 업로드한 사용자의 아이디
     - response header: X
@@ -77,3 +77,20 @@
         }
       ]
       ```
+  - `GET api/img/{filename}`: 파일의 이름을 받으면 해당하는 이미지를 응답합니다.
+    - request header: X
+    - params: 
+      - filename: `img/name`API를 통해 얻은 파일의 이름 값
+    - request body: X
+    - response header: X
+    - response body: 
+      - img(File): 이미지 파일
+  - `GET api/img/user/{filename}`: 파일의 이름을 받으면 업로드한 유저를 응답합니다.
+    - request header: X
+    - params: 
+      - filename: `img/name`API를 통해 얻은 파일의 이름 값
+    - request body: X
+    - response header: X
+    - response body: 
+      - uid(String): 해당하는 파일을 업로드한 유저의 아이디
+  
