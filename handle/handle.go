@@ -17,6 +17,11 @@ type ImageName struct {
 	Name string `json:"imgName"`
 }
 
+// ImageUploader 는 이미지 파일을 업로드한 유저의 ID를 담고 있는 구조체입니다.
+type ImageUploader struct {
+	UID string `json:"uid"`
+}
+
 // FileMeta 는 Upload할 파일의 메타정보를 담는 구조체입니다.
 type FileMeta struct {
 	Inode int
