@@ -7,25 +7,16 @@ import (
 	"mime/multipart"
 	"net/http"
 	"path/filepath"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
-// FileMeta 는 Upload할 파일의 메타정보를 담는 구조체입니다.
-type FileMeta struct {
-	Inode int
-	UID   string
-}
-
-type res struct {
-	IsSuccess bool `json:"isSuccess"`
-}
-
 // Upload 함수는 유저 정보와 사용자 정보를 받아 이미지 업로드 기능을 수행하는 핸들러입니다.
 func Upload(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	uploadRes := new(res)
+	uploadRes := new(Res)
 
 	req.ParseForm()
 	_, fh, err := req.FormFile("files")
@@ -33,12 +24,15 @@ func Upload(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	uid := req.FormValue("uid")
 
 	file, _ := fh.Open()
-	uFileName := string(iname + filepath.Ext(fh.Filename))
+	timeNow := time.Now().Format("2006-01-02-15:04:05")
+	uFileName := string(iname + "_" + timeNow + filepath.Ext(fh.Filename))
 	gridFile, err := mongoDB.Session.DB("test").GridFS("fs").Create(uFileName)
 	if err != nil {
 		uploadRes.IsSuccess = false
 	}
-	gridFile.SetMeta(bson.M{"user": uid})
+	fe := filepath.Ext(fh.Filename)
+	fileExt := fe[1:]
+	gridFile.SetMeta(bson.M{"uid": uid, "ext": fileExt})
 	gridFile.SetName(uFileName)
 
 	if err := writeToGridFile(file, gridFile); err != nil {
