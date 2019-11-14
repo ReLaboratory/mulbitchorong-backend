@@ -62,7 +62,7 @@
     - response header: X
     - response body:
       - isSuccess(Boolean): 업로드 성공 여부
-  - `GET api/img/name`: 모든 이미지의 이름을 응답합니다.
+  - `GET api/img/upload/name`: 모든 이미지의 이름을 응답합니다.
     - request header: X
     - params: X
     - request body: X
@@ -77,7 +77,7 @@
         }
       ]
       ```
-  - `GET api/img/{filename}`: 파일의 이름을 받으면 해당하는 이미지를 응답합니다.
+  - `GET api/img/upload/{filename}`: 파일의 이름을 받으면 해당하는 이미지를 응답합니다.
     - request header: X
     - params: 
       - filename: `img/name`API를 통해 얻은 파일의 이름 값
@@ -85,7 +85,7 @@
     - response header: X
     - response body: 
       - img(File): 이미지 파일
-  - `GET api/img/user/{filename}`: 파일의 이름을 받으면 업로드한 유저를 응답합니다.
+  - `GET api/img/upload/user/{filename}`: 파일의 이름을 받으면 업로드한 유저를 응답합니다.
     - request header: X
     - params: 
       - filename: `img/name`API를 통해 얻은 파일의 이름 값
