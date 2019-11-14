@@ -30,9 +30,9 @@ func New() (*Server, error) {
 	sv.router.GET("/api/account/profile/:id", handle.GetProfileImg)
 	sv.router.POST("/api/account/profile", handle.RegisterProfile)
 	sv.router.POST("/api/img/upload", handle.Upload)
-	sv.router.GET("/api/img/upload/name", handle.GetImgNames)
-	sv.router.GET("/api/img/upload/:filename", handle.GetImage)
-	sv.router.GET("/api/img/upload/user/:filename", handle.GetImageUser)
+	sv.router.GET("/api/img/upload-name", handle.GetImgNames)
+	sv.router.GET("/api/img/upload-file/:filename", handle.GetImage)
+	sv.router.GET("/api/img/upload-user/:filename", handle.GetImageUser)
 
 	sv.neg.UseHandler(sv.router)
 	return sv, nil
