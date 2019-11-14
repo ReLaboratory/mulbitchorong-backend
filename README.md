@@ -51,6 +51,7 @@
     - response body:
       - isSuccess(Boolean): 프로필 등록 성공 여부
 - Image API
+=> Upload API의 경우에는 FormData로
   - `POST api/img/upload`: 이미지 정보와 사용자 정보를 받으면 성공 여부를 응답합니다.
     - request header: X
     - params: X
