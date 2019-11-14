@@ -9,10 +9,11 @@ import (
 
 // User 구조체는 유저의 전체 정보를 저장합니다.
 type User struct {
-	ID   bson.ObjectId `bson:"_id" json:"id"`
-	UID  string        `bson:"uid" json:"uid"`
-	Pw   string        `bson:"pw" json:"pw"`
-	Name string        `bson:"uname" json:"uname"`
+	ID         bson.ObjectId `bson:"_id" json:"id"`
+	UID        string        `bson:"uid" json:"uid"`
+	Pw         string        `bson:"pw" json:"pw"`
+	Name       string        `bson:"uname" json:"uname"`
+	ProfileImg string        `bson:"profile_img" json:"profile_img"`
 }
 
 // Res 구조체는 생성된 유저의 이름과 회원가입 성공 여부를 저장합니다.
