@@ -23,6 +23,9 @@ func Upload(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	iname := req.FormValue("imgName")
 	uid := req.FormValue("uid")
 
+	iname = iname[1:(len(iname) - 1)]
+	uid = uid[1:(len(uid) - 1)]
+
 	file, _ := fh.Open()
 	timeNow := time.Now().Format("2006-01-02-15:04:05")
 	uFileName := string(iname + "_" + timeNow + filepath.Ext(fh.Filename))
