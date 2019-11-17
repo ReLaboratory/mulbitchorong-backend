@@ -27,7 +27,7 @@ func GetProfileImg(w http.ResponseWriter, req *http.Request, ps httprouter.Param
 
 	f, err := gridfs.Open(name)
 	if err != nil {
-		log.Printf("Failed to open %s: %v", name, err)
+		log.Printf("%s Failed to open %s: %v", req.RequestURI, name, err)
 		http.Error(w, "something went wrong", http.StatusInternalServerError)
 		return
 	}
