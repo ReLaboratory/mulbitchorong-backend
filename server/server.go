@@ -29,6 +29,8 @@ func New() (*Server, error) {
 	sv.router.GET("/api/account/uname/:id", handle.GetUserName)
 	sv.router.GET("/api/account/profile/:id", handle.GetProfileImg)
 	sv.router.POST("/api/account/profile", handle.RegisterProfile)
+	sv.router.PUT("/api/account/profile", handle.RegisterProfile)
+	sv.router.GET("/api/account/profile-registered/:id", handle.CheckProfile)
 	sv.router.POST("/api/img/upload", handle.Upload)
 	sv.router.GET("/api/img/upload-name", handle.GetImgNames)
 	sv.router.GET("/api/img/upload-file/:filename", handle.GetImage)

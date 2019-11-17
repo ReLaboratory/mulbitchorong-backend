@@ -50,6 +50,22 @@
     - response header: X
     - response body:
       - isSuccess(Boolean): 프로필 등록 성공 여부
+  - `PUT api/account/profile`: 유저정보와 프로필 이미지를 받으면 프로필 이미지를 수정하고 성공 여부를 응답합니다.
+    - request header: X
+    - params: X
+    - request body:
+      - profile(File): 프로필 이미지 파일
+      - uid(String): 사용자 아이디
+    - response header: X
+    - response body:
+      - isSuccess(Boolean): 프로필 등록 성공 여부
+  - `GET api/account/profile-registered/{id}`: 유저정보를 받으면 프로필 등록 여부를 응답합니다.
+    - request header: X
+    - params: id(String)
+    - request body: X
+    - response header: X
+    - response body:
+      - isSuccess(Boolean): 프로필 등록 여부
 - Image API
 => Upload API의 경우에는 FormData로
   - `POST api/img/upload`: 이미지 정보와 사용자 정보를 받으면 성공 여부를 응답합니다.

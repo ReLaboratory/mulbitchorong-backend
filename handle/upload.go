@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io"
 	"mime/multipart"
+	"mulbitchorong-backend/user"
 	"net/http"
 	"path/filepath"
 	"time"
@@ -25,6 +26,17 @@ func Upload(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
 	iname = iname[1:(len(iname) - 1)]
 	uid = uid[1:(len(uid) - 1)]
+
+	result := user.New()
+	session := mongoDB.Session.Copy()
+	defer session.Close()
+	c := session.DB("test").C("users")
+	err = c.Find(bson.M{"uid": uid}).One(&result)
+	if err != nil {
+		uploadRes.IsSuccess = false
+		renderer.JSON(w, http.StatusOK, uploadRes)
+		return
+	}
 
 	file, _ := fh.Open()
 	timeNow := time.Now().Format("2006-01-02-15:04:05")

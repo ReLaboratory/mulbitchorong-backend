@@ -1,7 +1,6 @@
 package handle
 
 import (
-	"log"
 	"mulbitchorong-backend/user"
 	"net/http"
 
@@ -13,16 +12,17 @@ import (
 func GetUserName(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	session := mongoDB.Session.Copy()
 	defer session.Close()
+	uname := user.NewName()
 
 	c := session.DB("test").C("users")
 
 	result := user.New()
 	err := c.Find(bson.M{"uid": ps.ByName("id")}).One(&result)
 	if err != nil {
-		log.Fatal(err)
+		uname.Name = ""
+	} else {
+		uname.Name = result.Name
 	}
-	uname := user.NewName()
-	uname.Name = result.Name
 
 	renderer.JSON(w, http.StatusOK, uname)
 }
