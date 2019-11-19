@@ -22,11 +22,13 @@ func RegisterProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 	session := mongoDB.Session.Copy()
 	defer session.Close()
 
-	err = session.DB("test").GridFS("fs").Remove(profileName)
-	if err != nil {
-		registerRes.IsSuccess = false
-		renderer.JSON(w, http.StatusCreated, registerRes)
-		return
+	if req.Method == "PUT" {
+		err = session.DB("test").GridFS("fs").Remove(profileName)
+		if err != nil {
+			registerRes.IsSuccess = false
+			renderer.JSON(w, http.StatusOK, registerRes)
+			return
+		}
 	}
 
 	c := session.DB("test").C("users")
