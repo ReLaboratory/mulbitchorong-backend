@@ -14,7 +14,7 @@ func RegisterProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 	registerRes := new(Res)
 
 	req.ParseForm()
-	_, fh, err := req.FormFile("files")
+	_, fh, err := req.FormFile("profile")
 	uid := req.FormValue("uid")
 
 	profileName := "profile_" + uid + "_mulbitchorong" + filepath.Ext(fh.Filename)
