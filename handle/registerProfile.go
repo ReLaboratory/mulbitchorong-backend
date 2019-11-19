@@ -36,13 +36,13 @@ func RegisterProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 	err = c.Find(bson.M{"uid": uid}).One(&u)
 	if err != nil {
 		registerRes.IsSuccess = false
-		renderer.JSON(w, http.StatusCreated, registerRes)
+		renderer.JSON(w, http.StatusOK, registerRes)
 		return
 	}
 	err = c.Update(bson.M{"_id": u.ID}, bson.M{"$set": bson.M{"profile_img": profileName}})
 	if err != nil {
 		registerRes.IsSuccess = false
-		renderer.JSON(w, http.StatusCreated, registerRes)
+		renderer.JSON(w, http.StatusOK, registerRes)
 		return
 	}
 	file, _ := fh.Open()
@@ -59,9 +59,10 @@ func RegisterProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 
 	if err := WriteToGridFile(file, gridFile); err != nil {
 		registerRes.IsSuccess = false
-	} else {
-		registerRes.IsSuccess = true
+		renderer.JSON(w, http.StatusOK, registerRes)
+		return
 	}
+	registerRes.IsSuccess = true
 
 	renderer.JSON(w, http.StatusCreated, registerRes)
 }
