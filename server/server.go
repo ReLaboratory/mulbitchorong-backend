@@ -19,7 +19,7 @@ func New() (*Server, error) {
 	sv.router = httprouter.New()
 	sv.neg = negroni.Classic()
 
-	err := handle.InitMongo("mongodb://localhost")
+	err := handle.InitMongo("mongodb://10.156.147.180:27017")
 	if err != nil {
 		return nil, err
 	}

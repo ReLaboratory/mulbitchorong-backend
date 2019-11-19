@@ -1,7 +1,9 @@
 package handle
 
 import (
+	"fmt"
 	"mulbitchorong-backend/db"
+	"os"
 
 	"github.com/unrolled/render"
 )
@@ -45,11 +47,21 @@ func init() {
 
 // InitMongo 는 몽고DB의 초기 설정을 하는 함수입니다.
 func InitMongo(addr string) error {
+	var dbID, dbPw string
+	fi, err := os.Open("db_account.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer fi.Close()
+	fmt.Fscan(fi, &dbID, &dbPw)
+
 	m, err := db.NewMongoDB(addr)
 	if err != nil {
 		return err
 	}
 	mongoDB = m
-
+	if err := mongoDB.Session.DB("admin").Login(dbID, dbPw); err != nil {
+		panic(err)
+	}
 	return nil
 }
