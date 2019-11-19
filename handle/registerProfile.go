@@ -1,6 +1,7 @@
 package handle
 
 import (
+	"log"
 	"mulbitchorong-backend/user"
 	"net/http"
 	"path/filepath"
@@ -16,6 +17,7 @@ func RegisterProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 	req.ParseForm()
 	_, fh, err := req.FormFile("profile")
 	uid := req.FormValue("uid")
+	uid = uid[1:(len(uid) - 1)]
 
 	profileName := "profile_" + uid + "_mulbitchorong" + filepath.Ext(fh.Filename)
 
@@ -37,12 +39,14 @@ func RegisterProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 	if err != nil {
 		registerRes.IsSuccess = false
 		renderer.JSON(w, http.StatusOK, registerRes)
+		log.Println("Not Found User : ", uid)
 		return
 	}
 	err = c.Update(bson.M{"_id": u.ID}, bson.M{"$set": bson.M{"profile_img": profileName}})
 	if err != nil {
 		registerRes.IsSuccess = false
 		renderer.JSON(w, http.StatusOK, registerRes)
+		log.Println("Failed to Update User Profile : ", profileName)
 		return
 	}
 	file, _ := fh.Open()
@@ -50,6 +54,9 @@ func RegisterProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 	gridFile, err := session.DB("test").GridFS("fs").Create(profileName)
 	if err != nil {
 		registerRes.IsSuccess = false
+		renderer.JSON(w, http.StatusOK, registerRes)
+		log.Println("Failed to Create :", profileName)
+		return
 	}
 
 	fe := filepath.Ext(fh.Filename)
@@ -60,6 +67,7 @@ func RegisterProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Par
 	if err := WriteToGridFile(file, gridFile); err != nil {
 		registerRes.IsSuccess = false
 		renderer.JSON(w, http.StatusOK, registerRes)
+		log.Println("Failed to Write File")
 		return
 	}
 	registerRes.IsSuccess = true
