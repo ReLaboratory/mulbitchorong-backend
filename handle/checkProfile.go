@@ -1,7 +1,6 @@
 package handle
 
 import (
-	"fmt"
 	"mulbitchorong-backend/user"
 	"net/http"
 
@@ -28,10 +27,8 @@ func CheckProfile(w http.ResponseWriter, req *http.Request, ps httprouter.Params
 	name := u.ProfileImg
 
 	if name != "" {
-		fmt.Println("NAME: ", name)
 		res.IsSuccess = true
 	} else {
-		fmt.Println("NAME: ", name)
 		res.IsSuccess = false
 	}
 	renderer.JSON(w, http.StatusOK, res)
