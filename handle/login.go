@@ -1,14 +1,16 @@
 package handle
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"mulbitchorong-backend/user"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/mholt/binding"
+	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
-	"gopkg.in/mgo.v2/bson"
 )
 
 // ComparePw 함수는 해쉬화된 Pw와 평문 Pw를 비교하는 함수입니다.
@@ -22,36 +24,37 @@ func ComparePw(hash, pw string) (bool, error) {
 
 // Login 함수는 로그인 기능을 수행하는 핸들러입니다.
 func Login(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	ures := user.NewRes()
 	uLogin := user.NewLogin()
-	errs := binding.Bind(req, uLogin)
-	if errs != nil {
-		fmt.Println(errs)
+	err := binding.Bind(req, uLogin)
+	if err != nil {
+		fmt.Println(err)
 	}
 
-	session := mongoDB.Session.Copy()
-	defer session.Close()
-
-	c := session.DB("test").C("users")
-
 	u := user.New()
-	err := c.Find(bson.M{"uid": uLogin.ID}).One(&u)
+	ures := user.NewRes()
+	err = mongoDB.C("test", "users").FindOne(context.TODO(), bson.M{"uid": uLogin.ID}).Decode(&u)
+
 	if err != nil {
 		ures.Name = ""
 		ures.IsSuccess = false
+		log.Println("Login : Login failed ", uLogin.ID, " != ", u.UID)
+		log.Println("Login : ", err)
 	} else {
 		if u.UID == uLogin.ID {
 			pwOK, _ := ComparePw(u.Pw, uLogin.Pw)
 			if pwOK {
 				ures.Name = u.Name
 				ures.IsSuccess = true
+				log.Printf("Login : User %s Login Successful", ures.Name)
 			} else {
 				ures.Name = ""
 				ures.IsSuccess = false
+				log.Println("Login : Login failed")
 			}
 		} else {
 			ures.Name = ""
 			ures.IsSuccess = false
+			log.Println("Login : Login failed")
 		}
 	}
 

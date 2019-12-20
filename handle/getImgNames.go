@@ -1,23 +1,23 @@
 package handle
 
 import (
-	"fmt"
+	"context"
+	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // GetImgNames 함수는 모든 이미지를 조회하여 모든 이미지의 파일이름을 응답하는 핸들러입니다.
 func GetImgNames(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	session := mongoDB.Session.Copy()
-	defer session.Close()
-
-	c := session.DB("test").C("fs" + ".files")
-
 	var imgfiles []*ImageFile
-	err := c.Find(nil).All(&imgfiles)
+	cursor, err := mongoDB.C("uploadfile", "fs.files").Find(context.TODO(), bson.M{})
 	if err != nil {
-		fmt.Println("ERROR: ", err)
+		log.Println("GetImgNames: ", err)
+	}
+	if err := cursor.All(context.TODO(), &imgfiles); err != nil {
+		log.Println("GetImgNames: ", err)
 	}
 
 	imgNames := make([]ImageName, len(imgfiles))

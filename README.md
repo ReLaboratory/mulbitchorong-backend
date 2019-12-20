@@ -27,16 +27,16 @@
     - response body:
       - isSuccess(Boolean): signup 성공 여부
       - uname(String): 사용자 이름
-  - `GET api/account/uname/{id}`: 아이디값을 쿼리스트링으로 받으면 사용자 이름을 응답합니다.
+  - `GET api/account/uname/{id}`: 아이디값을 사용자 이름을 응답합니다.
     - request header: X
-    - params: id(String)
+    - params: X
     - request body: X
     - response header: X
     - response body:
       - uname(String): 사용자 이름
-  - `GET api/account/profile/{id}`: 아이디값을 쿼리스트링으로 받으면 프로필 이미지를 응답합니다.
+  - `GET api/account/profile/{id}`: 아이디값을 받으면 프로필 이미지를 응답합니다.
     - request header: X
-    - params: id(String)
+    - params: X
     - request body: X
     - response header: X
     - response body:
@@ -61,7 +61,7 @@
       - isSuccess(Boolean): 프로필 등록 성공 여부
   - `GET api/account/profile-registered/{id}`: 유저정보를 받으면 프로필 등록 여부를 응답합니다.
     - request header: X
-    - params: id(String)
+    - params: X
     - request body: X
     - response header: X
     - response body:
@@ -95,16 +95,14 @@
       ```
   - `GET /api/img/upload-file/{filename}`: 파일의 이름을 받으면 해당하는 이미지를 응답합니다.
     - request header: X
-    - params: 
-      - filename: `img/name`API를 통해 얻은 파일의 이름 값
+    - params: X
     - request body: X
     - response header: X
     - response body: 
       - img(File): 이미지 파일
   - `GET /api/img/upload-user/{filename}`: 파일의 이름을 받으면 업로드한 유저를 응답합니다.
     - request header: X
-    - params: 
-      - filename: `img/name`API를 통해 얻은 파일의 이름 값
+    - params: X
     - request body: X
     - response header: X
     - response body: 

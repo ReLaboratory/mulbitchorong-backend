@@ -1,11 +1,14 @@
 package main
 
-import "mulbitchorong-backend/server"
+import (
+	"log"
+	"mulbitchorong-backend/server"
+)
 
 func main() {
 	s, err := server.New()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	s.Run(":3000")
 }

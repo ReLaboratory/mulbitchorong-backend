@@ -1,17 +1,23 @@
 package handle
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"mulbitchorong-backend/db"
-	"os"
+	"mulbitchorong-backend/user"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/unrolled/render"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // ImageFile 은 이미지 파일에 대한 정보를 담고 있는 구조체입니다.
 type ImageFile struct {
-	Filename string   `bson:"filename"`
-	MetaData FileMeta `bson:"metadata"`
+	ID       primitive.ObjectID `bson:"_id"`
+	Filename string             `bson:"filename"`
+	MetaData FileMeta           `bson:"metadata"`
 }
 
 // ImageName 은 이미지 파일의 이름을 담고 있는 구조체입니다.
@@ -43,25 +49,40 @@ var (
 
 func init() {
 	renderer = render.New()
+	db, err := db.NewMongoDB(
+		"mongodb://mul2019re:bit2019re@cluster0-shard-00-00-zdtbn.mongodb.net:27017,cluster0-shard-00-01-zdtbn.mongodb.net:27017,cluster0-shard-00-02-zdtbn.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority",
+		[]string{"test"},
+	)
+	if err != nil {
+		log.Println("db.NewMongoDB : ", err)
+	}
+	InitMongo(db)
 }
 
 // InitMongo 는 몽고DB의 초기 설정을 하는 함수입니다.
-func InitMongo(addr string) error {
-	var dbID, dbPw string
-	fi, err := os.Open("db_account.txt")
-	if err != nil {
-		panic(err)
+func InitMongo(db *db.MongoDB) error {
+	dbs := []string{
+		"test",
+		"uploadfile",
 	}
-	defer fi.Close()
-	fmt.Fscan(fi, &dbID, &dbPw)
+	db.SetDatabases(dbs)
+	testCs := []string{
+		"users",
+		"fs.files",
+		"fs.chunks",
+	}
+	uploadCs := []string{
+		"fs.files",
+		"fs.chunks",
+	}
+	mongoDB = db
+	mongoDB.SetCollections("test", testCs)
+	mongoDB.SetCollections("uploadfile", uploadCs)
+	/* TEST */
 
-	m, err := db.NewMongoDB(addr)
-	if err != nil {
-		return err
-	}
-	mongoDB = m
-	if err := mongoDB.Session.DB("admin").Login(dbID, dbPw); err != nil {
-		panic(err)
-	}
+	IDCheck := user.User{}
+	mongoDB.DB("test").Collection("users").FindOne(context.TODO(), bson.M{"uid": "yunseoh68"}).Decode(&IDCheck)
+	mongoDB.C("test", "users").FindOne(context.TODO(), bson.M{"uid": "yunseoh68"}).Decode(&IDCheck)
+	fmt.Println(IDCheck.Name)
 	return nil
 }
