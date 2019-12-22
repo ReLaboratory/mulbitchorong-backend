@@ -4,5 +4,5 @@ mulbitchorong-backend
 mulbitchorong-backend.exe
 
 ### Go Patch ###
-/vendor/
-/Godeps/
+vendor/
+Godeps/
