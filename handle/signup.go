@@ -10,6 +10,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/mholt/binding"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -20,7 +21,7 @@ func Signup(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	if errs != nil {
 		fmt.Println(errs)
 	}
-
+	u.ID = primitive.NewObjectID()
 	ures := user.NewRes()
 	ures.Name = u.Name
 	IDCheck := user.User{}
@@ -30,6 +31,10 @@ func Signup(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
 		hashedPw, _ := bcrypt.GenerateFromPassword([]byte(u.Pw), bcrypt.DefaultCost)
 		u.Pw = string(hashedPw[:])
+
+		log.Println("ID : ", u.ID)
+		log.Println("PW : ", u.Pw)
+		log.Println("Profile img : ", u.ProfileImg)
 
 		if _, err := mongoDB.C("test", "users").InsertOne(context.TODO(), u); err != nil {
 			log.Println("Signup : ", err)
