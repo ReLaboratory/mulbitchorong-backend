@@ -49,12 +49,14 @@ var (
 
 func init() {
 	renderer = render.New()
+NEW_MONGO:
 	db, err := db.NewMongoDB(
 		"mongodb://mul2019re:bit2019re@cluster0-shard-00-00-zdtbn.mongodb.net:27017,cluster0-shard-00-01-zdtbn.mongodb.net:27017,cluster0-shard-00-02-zdtbn.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority",
 		[]string{"test"},
 	)
 	if err != nil {
 		log.Println("db.NewMongoDB : ", err)
+		goto NEW_MONGO
 	}
 	InitMongo(db)
 }
