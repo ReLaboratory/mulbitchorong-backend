@@ -22,9 +22,6 @@ mulbitchorong-backend.exe
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-### Go Patch ###
-vendor/
-Godeps/
 
 ### Linux ###
 *~
