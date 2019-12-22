@@ -2,3 +2,7 @@
 db_account.txt
 mulbitchorong-backend
 mulbitchorong-backend.exe
+
+### Go Patch ###
+/vendor/
+/Godeps/
