@@ -23,8 +23,8 @@ mulbitchorong-backend.exe
 # vendor/
 
 ### Go Patch ###
-vendor
-Godeps
+vendor/
+Godeps/
 
 ### Linux ###
 *~
